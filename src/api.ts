@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { urlencoded, json } from 'body-parser';
+import mysql from 'mysql2/promise';
+import dbConfig from './utils/dbConfig';
 
 export const app = express();
 
@@ -24,7 +26,7 @@ app.get('/', (req, res) => {
 
 const api = express.Router();
 
-// Receber os dados do arduino
+// Receber os dados do Arduino
 app.post('/postData', (req, res) => {
   const temperature = req.body.temperature;
   const humidity = req.body.humidity;
@@ -42,5 +44,24 @@ app.get('/getData', (req, res) => {
   res.status(200).send(data);
 });
 
-// Version the api
+// Endpoint para obter os últimos 4 registros do banco de dados
+app.get('/gethistoric', async (req, res) => {
+  // TODO: Caching
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+
+    const [rows] = await connection.query(
+      'SELECT * FROM agroMonitor ORDER BY id DESC LIMIT 4'
+    );
+
+    await connection.end();
+
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error('Erro ao obter registros do banco de dados:', error);
+    res.status(500).send('Erro interno do servidor');
+  }
+});
+
+// Version the API
 app.use('/api/v1', api);
