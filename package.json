@@ -19,7 +19,8 @@
     "moment-timezone": "^0.5.43",
     "mysql2": "^3.6.3",
     "node-cron": "^3.0.3",
-    "redis": "^4.6.10"
+    "redis": "^4.6.10",
+    "redis-mock": "^0.56.3"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",

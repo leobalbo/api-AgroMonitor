@@ -1,5 +1,5 @@
 // cache.ts
-import redis from 'redis';
+import redis from 'redis-mock';
 import util from 'util';
 import { fetchDataFromDatabase, insertDataIntoDatabase } from './database';
 import { calculateAverage } from './average';
