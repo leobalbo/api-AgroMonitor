@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { getCacheData } from '../utils/cache';
+import { getCacheData, updateCache } from '../utils/cache';
 
 const router = express.Router();
 
@@ -10,14 +10,14 @@ const cache: express.RequestHandler = async (
   next: express.NextFunction
 ) => {
   try {
-    const cachedData = await getCacheData();
+    let cachedData = await getCacheData();
 
-    if (cachedData.length > 0) {
-      console.log('Fetching data from cache');
-      res.status(200).json(cachedData);
-    } else {
-      next();
+    if (cachedData.length === 0) {
+      await updateCache();
+      cachedData = await getCacheData();
     }
+
+    res.status(200).json(cachedData);
   } catch (error) {
     console.error('Error while fetching data from cache:', error);
     next();

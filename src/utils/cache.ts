@@ -37,7 +37,7 @@ export const setCacheData = async (data: any): Promise<void> => {
 };
 
 export const updateCache = async () => {
-  console.log('Atualizando o cache...');
+  console.log('Updating cache...');
   try {
     const currentDate = new Date();
     const average = calculateAverage();
@@ -51,8 +51,8 @@ export const updateCache = async () => {
     const updatedData = await fetchDataFromDatabase();
     await setCacheData(updatedData);
 
-    console.log('Cache atualizado com sucesso.');
+    console.log('Cache updated successfully.');
   } catch (error) {
-    console.error('Erro ao atualizar o cache:', error);
+    console.error('Error updating cache:', error);
   }
 };
